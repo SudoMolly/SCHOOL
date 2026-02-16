@@ -4,3 +4,9 @@
 [submodule "upper/CS302/assignments/cs302-ass2-mollydiaz"]
 	path = upper/CS302/assignments/cs302-ass2-mollydiaz
 	url = https://gitlab.cecs.pdx.edu/modiaz/cs302-ass2-mollydiaz
+[submodule "upper/JoyOfCodingWinter2026"]
+	path = upper/JoyOfCodingWinter2026
+	url = https://github.com/SudoMolly/JoyOfCodingWinter2026
+[submodule "upper/Programming-Languages--358-"]
+	path = upper/Programming-Languages--358-
+	url = https://github.com/SudoMolly/Programming-Languages--358-
