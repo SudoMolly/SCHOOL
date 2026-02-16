@@ -1,0 +1,148 @@
+// *** Write your name here ***
+//
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <time.h>
+#include "vector.h"
+
+// Base version
+void dotprod0(vec_ptr a, vec_ptr b, data_t *dest)
+{
+  assert(a->len == b->len);
+  *dest = 0;
+  for (int i = 0; i < a->len; i++)
+	*dest += a->data[i] * b->data[i];
+}
+
+// Simple Optimization
+void dotprod1(vec_ptr a, vec_ptr b, data_t *dest)
+{
+  int length = a->len;
+  assert(a->len == b->len);
+  *dest = 0;
+  double * a_loc = a->data;
+  double * b_loc = b->data;
+  double local = 0;
+  int i;
+  for (i = 0; i < length; i++)
+	local += *(a_loc + i) * *(b_loc + i);
+  *dest = local;
+}
+
+// Loop unrolling 2x1
+void dotprod2(vec_ptr a, vec_ptr b, data_t *dest)
+{
+  int length = a->len;
+  assert(a->len == b->len);
+  *dest = 0;
+  double * a_loc = a->data;
+  double * b_loc = b->data;
+  double local = 0;
+  int i;
+  for (i = 0; i < length; i += 2)
+  {
+	local += a_loc[i] * b_loc[i];
+	local += a_loc[i + 1] * b_loc[i + 1];
+  }
+  *dest = local;
+}
+
+// Loop unrolling 3x1
+void dotprod3(vec_ptr a, vec_ptr b, data_t *dest)
+{
+  int length = a->len;
+  assert(a->len == b->len);
+  *dest = 0;
+  double * a_loc = a->data;
+  double * b_loc = b->data;
+  double local = 0;
+  int i;
+  for (i = 0; i < length; i += 3)
+  {
+	local += a_loc[i] * b_loc[i];
+	local += a_loc[i + 1] * b_loc[i + 1];
+	local += a_loc[i + 2] * b_loc[i + 2];
+  }
+  *dest = local;
+}
+
+// Loop unrolling 2x2
+void dotprod4(vec_ptr a, vec_ptr b, data_t *dest)
+{
+  int length = a->len;
+  assert(a->len == b->len);
+  *dest = 0;
+  double * a_loc = a->data;
+  double * b_loc = b->data;
+  double local1 = 0;
+  double local2 = 0;
+  int i;
+  for (i = 0; i < length; i += 2)
+  {
+	local1 += a_loc[i] * b_loc[i];
+	local2 += a_loc[i + 1] * b_loc[i + 1];
+  }
+  local1 += a_loc[i] * b_loc[i];
+  *dest = local1 + local2;
+}
+
+void dotprod_asm(data_t *a, data_t *b, data_t *dest, int len);
+
+// Base ASM version (with xmm float registers)
+void dotprod5(vec_ptr a, vec_ptr b, data_t *dest)
+{
+  assert(a->len == b->len);
+  dotprod_asm(a->data, b->data, dest, a->len);
+}
+
+#define ABS(x) ((x)>0 ? x : -(x))
+
+// Measure elapsed time
+clock_t timing(void(*f)(vec_ptr,vec_ptr,data_t *), 
+			vec_ptr a, vec_ptr b, data_t *dest)
+{
+  clock_t ctime = clock();
+  f(a, b, dest);
+  return clock() - ctime;
+}
+
+// Report result
+void report(char *name, clock_t ctime, data_t sum, data_t ref)
+{
+  printf("%s: %5ld", name, ctime);
+  if (ABS(sum - ref) < ref/1000000.) 
+	printf(" (sum = %10.2f, match)\n", sum);
+  else 
+	printf("\n*** sum = %10.2f (mis-match!)\n", sum);
+}
+
+int main()
+{
+  vec_ptr a, b;
+  data_t ref, sum1, sum2, sum3, sum4, sum5;
+
+  size_t len = 1000000;
+  a = random_vec(len);
+  b = random_vec(len);
+	
+  // warm-up
+  dotprod0(a, b, &ref);
+  printf("vec->len = %ld, ref = %10.2f\n", a->len, ref);
+
+  clock_t time0 = timing(dotprod0, a, b, &ref);
+  clock_t time1 = timing(dotprod1, a, b, &sum1);
+  clock_t time2 = timing(dotprod2, a, b, &sum2);
+  clock_t time3 = timing(dotprod3, a, b, &sum3);
+  clock_t time4 = timing(dotprod4, a, b, &sum4);
+  clock_t time5 = timing(dotprod5, a, b, &sum5);
+
+  report("dotprod0 (base)      ", time0, ref, ref);
+  report("dotprod1 (simple opt)", time1, sum1, ref);
+  report("dotprod2 (unroll 2x1)", time2, sum2, ref);
+  report("dotprod3 (unroll 3x1)", time3, sum3, ref);
+  report("dotprod4 (unroll 2x2)", time4, sum4, ref);
+  report("dotprod5 (base asm)  ", time5, sum5, ref);
+
+}
+

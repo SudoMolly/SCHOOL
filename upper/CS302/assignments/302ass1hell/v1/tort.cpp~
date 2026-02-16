@@ -1,0 +1,13 @@
+
+
+int make_tortoise(vector<tortoise> &t, int max, int i)
+{
+    char * tempc;
+    string temps;
+    if(!case1_strings(temps,tempc)) exit(__LINE__);
+    t.emplace(i,temps,tempc);
+    ++i;
+    ~strcpy2(tempc);
+    if (i == max) return i;
+    return (make_tortoise(t,max,i));
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "lab swap script"
+cd ./../

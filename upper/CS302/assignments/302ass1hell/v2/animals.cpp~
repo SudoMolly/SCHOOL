@@ -1,0 +1,140 @@
+//CLASSES FILE
+#include "overview.h"
+using namespace std;
+
+//base---------------------------------------------------------------------------------|
+base::base()
+{
+    srand(time(NULL));
+}
+base::base(char *& toanimal, std::string & toname)
+{
+    strcpy2(animal,toanimal);
+    name = toname;
+}
+
+base::~base()
+{
+    delete [] animal;
+    animal = nullptr;
+    name.clear();
+}
+int base::round_tick(std::vector<int> & attr)
+{
+    
+}
+
+int base::random()
+{
+    return (std::max(rand() % 101,1));
+}
+
+int base::type(int & type)
+{
+    return type;
+}
+int base::display()
+{
+    if (!animal) return 0;
+    cout << "===============\n"
+         << "Name: " << name
+         << "\nAnimal: " << animal
+         << endl;
+    return 1;
+}
+
+//derived-----------------------------------------------------------------------------|
+
+//land
+land::land(char *& toanimal, std::string & toname) : public base(char*&toanimal,std::string & toname)
+{
+    attr.resize(6);
+    attr[0] = max(random() % 5,1);
+    attr[1] = 20;
+    attr[2] = 0;
+    attr[3] = 10;
+    attr[4] = 0;
+    attr[5] = 1;
+}
+land::land()
+{
+}
+land::~land()
+{
+}
+bool land::bungle()
+{
+}
+int land::round()
+{
+}
+bool land::recover()
+{
+}
+
+bool land::display(vector<land> & list, max,i)
+{
+    if (list.empty()) return false;
+    if (i == max) return true;
+    i += list[i].display();
+    return display(list,max,i);
+}
+
+
+
+//sea
+sea::sea(char *& toanimal, std::string & toname) : public base(char*&toanimal,std::string & toname)
+{
+    attr.resize(6);
+    attr[0] = max(random() % 5,1);
+    attr[1] = 20;
+    attr[2] = 0;
+    attr[3] = 10;
+    attr[4] = 0;
+    attr[5] = 2;
+    
+
+}
+sea::sea()
+{
+}
+sea::~sea()
+{
+}
+bool sea::bungle()
+{
+}
+int sea::round()
+{
+}
+bool sea::recover()
+{
+}
+
+//pigeon
+
+pigeon::pigeon(char *& toanimal, std::string & toname) : public base(char*&toanimal,std::string & toname)
+{
+    attr.resize(6);
+    attr[0] = max(random() % 5,1);
+    attr[1] = 20;
+    attr[2] = 0;
+    attr[3] = 10;
+    attr[4] = 0;
+    attr[5] = 3;
+}
+pigeon::pigeon()
+{
+}
+pigeon::~pigeon()
+{
+}
+bool pigeon::bungle()
+{
+}
+int pigeon::round()
+{
+}
+bool pigeon::recover()
+{
+}

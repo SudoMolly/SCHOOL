@@ -1,0 +1,137 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int horsepool(char * inputA, char * cmp, int * alpha, int Ilen, int Wlen);
+
+int main()
+{
+    //char alpha[27] = {"abcdefghijklmnopqrstuvwxyz"};
+    int max_val = 122;
+    int alpha[122];
+    //int values[27];
+
+    char inputA[1000];
+    char workA[1000];
+    for (int i = 0; i < 1000; ++i)
+    {
+        if (i < 122) alpha[i] = 0;
+        inputA[i] = 0;
+        workA[i] = '\0';
+    }
+
+    FILE *file = fopen("input.txt","r");
+    if (file == NULL) exit(2);
+
+    printf("Input Array: ");
+    fgets(inputA, sizeof(inputA),file);
+    printf("%s",inputA);
+    printf("\nCmp Array :");
+    fgets(workA,sizeof(workA),file);
+    printf("%s",workA);
+    fclose(file);
+    printf("\nindex: ");
+    //int sentinelA[100];
+    //int newval[100];
+    
+
+    int Ilen = strlen(inputA);
+    int Wlen = strlen(workA);
+    int last = workA[Wlen - 1];
+    if (last < 65 || (last > 90 && last < 97) || last > max_val)
+    {
+        --Wlen;
+        last = workA[Wlen-1];
+    }
+
+    //set last
+    alpha[last] = Wlen;
+    --Wlen; //set to index value
+
+    int outer_i = 0;
+    int index = 0;
+
+    //set rest
+    for (int outer = Wlen; 0 < outer; --outer)
+    {
+        index = workA[outer_i];
+        alpha[index] = outer;
+        ++outer_i;
+    }
+
+    ++Wlen; //set back to number value
+
+    //set stragglers
+    for (int i = 65; i < 91; ++i)
+    {
+        if (alpha[i] == 0)
+        {
+            alpha[i] = Wlen;
+        }
+    }
+
+    for (int i = 97; i <= max_val; ++i)
+    {
+        if (alpha[i] == 0)
+        {
+            alpha[i] = Wlen;
+        }
+    }
+
+    --Ilen; //set to index value
+    --Wlen; //set back to index value
+    int count = horsepool(inputA,workA,alpha,Ilen,Wlen);
+    printf("Comparisons: %d\n", count);
+
+    return 0;
+}
+
+int horsepool(char * inputA, char * cmp, int * alpha, int Ilen, int Wlen)
+{
+    int start_marker = Wlen;
+    int compares = 0;
+    int final_comp = 0;
+    int guess_pos = Wlen;
+    int hold_pos = guess_pos;
+    int found = 0;
+
+    for (int outer = 0; outer < Ilen && found == 0; ++outer)
+    {
+        ++compares;
+        hold_pos = guess_pos;
+        while (cmp[start_marker] == inputA[guess_pos])
+        {
+            if (start_marker == 0)
+            {
+                final_comp = compares;
+                found = 1;
+                break;
+            }
+            ++compares;
+            --start_marker;
+            --guess_pos;
+        }
+        if (found == 0)
+        {
+            int alpha_index = inputA[hold_pos];
+            guess_pos = hold_pos + alpha[alpha_index];
+            start_marker = Wlen;
+        }
+    }
+
+    if (found)
+    {
+        int found_index = hold_pos - Wlen;
+        printf("%d\n",found_index);
+        return final_comp;
+    }
+    printf("%d\n",-1);
+    return compares;
+}
+
+
+
+
+
+
+

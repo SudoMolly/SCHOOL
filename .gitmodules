@@ -1,0 +1,6 @@
+[submodule "upper/CS302/assignments/302ass1hell/302-1"]
+	path = upper/CS302/assignments/302ass1hell/302-1
+	url = https://gitlab.cecs.pdx.edu/modiaz/302-1
+[submodule "upper/CS302/assignments/cs302-ass2-mollydiaz"]
+	path = upper/CS302/assignments/cs302-ass2-mollydiaz
+	url = https://gitlab.cecs.pdx.edu/modiaz/cs302-ass2-mollydiaz

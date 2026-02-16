@@ -1,0 +1,14 @@
+//Test size
+
+#include <stdio.h>
+
+int main() 
+{
+    int number = 3;
+    char str[4] = {'a','b','c','\0'};
+    printf(&number);
+    printf("\n");
+    printf(&str);
+
+    return 0;
+}

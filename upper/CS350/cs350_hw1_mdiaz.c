@@ -1,0 +1,76 @@
+//Quick Sort CS350 HW 1, David Ely (M&W 2-3:50)
+//Molly Diaz, modiaz@pdx.edu, 966934367
+
+//-------------------------------Pre-Processor--------------------------------//
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+//------------------------------Test-Structures-------------------------------//
+
+
+//---------------------------------Prototypes---------------------------------//
+void swap(int *left, int *right);
+int alg(int a[], int low, int hi);
+void quicksort(int a[], int low, int hi);
+
+int main() {
+    int size;
+    int a[100];
+    printf("Enter size of array: ");
+    scanf("%d",&size);
+    
+    for (int i = 0; i < size; ++i)
+    {
+        printf("\n#%d: ",i + 1);
+        scanf("%d",&a[i]);
+    }
+
+    printf("\nYour unsorted array:\n[");
+    for (int i = 0; i < size; ++i)
+        printf("%d ", a[i]);
+    printf("]\n");
+
+    quicksort(a, 0, size-1);
+
+    printf("Your sorted array:\n[");
+    for (int i = 0; i < size; ++i) {
+        printf("%d", a[i]);
+        if (i < size-1) printf(", ");
+    }
+    printf("]\n");
+
+    return 0;
+}
+
+void swap(int *left, int *right) {
+    int temp = *left;
+    *left = *right;
+    *right = temp;
+}
+
+int alg(int a[], int low, int hi) {
+    int pivot = low;
+    int ilow = low + 1;
+    int ihi = hi;
+    
+    while (ilow <= ihi) {
+        while (ilow <= hi && a[ilow] <= a[pivot]) ilow++;
+        while (ihi >= low && a[ihi] > a[pivot]) ihi--;
+        if (ilow < ihi) {
+            swap(&a[ilow], &a[ihi]);
+        }
+    }
+    
+    swap(&a[pivot], &a[ihi]);  // Place pivot in correct position
+    return ihi;  // Return the pivot's final position
+}
+
+void quicksort(int a[], int low, int hi) {
+    if (low < hi) {
+        int pivot = alg(a, low, hi);
+        quicksort(a, low, pivot-1);
+        quicksort(a, pivot+1, hi);
+    }
+}

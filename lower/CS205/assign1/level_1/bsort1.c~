@@ -1,0 +1,79 @@
+// For CS205, Portland State University (J. Li)
+
+// Bubble sort in C (baseline version)
+
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <stddef.h>
+
+// Print an int array of size n
+//
+void printArray(char* msg, int* a, int n)
+{
+  printf(msg);
+  for (int i = 0; i < n; i++)
+    printf("%d, ", a[i]);
+  printf("\n");
+}
+
+// Swap two int array elements
+//
+void swap(int* a, int i, int j)
+{
+  if (i != j) {
+    int tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+}
+
+// Bubble sort a range [low,high) of an int array
+//
+void bsort(int* a, int low, int high)
+{
+  if (high - low > 1) 
+    for (int i = low; i < high; i++)
+      for (int j = i+1; j < high; j++) 
+		if (a[i] > a[j])
+		  swap(a, i, j);
+}
+
+int * initArray(int n)
+{
+    if (n <= 0) return NULL;
+
+    int * array = (int*)malloc(n * sizeof(int));
+    
+    for (int i = 0; i < n; ++i)
+    {
+        srand(time(NULL));
+        array[i] = rand() % (n +1);
+    }
+
+    return array;
+}
+
+void MSGinitArray(int choice)
+{
+    switch (choice)
+    {
+        //Intialize array
+        case (0):
+        {
+            printf("\nEnter array size: ");
+            break;
+        }
+
+        //Error code
+        case (1):
+        {
+            printf("n must be a positive integer\n");
+            break;
+        }
+    }
+}
+
+
+
+

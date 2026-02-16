@@ -1,0 +1,54 @@
+// For CS205, Portland State University (J. Li)
+
+// header file for bsort.c
+//INT = integer
+//CHR = char
+//STR = string
+
+//DRIVER PROGRAMS
+//
+extern void error_code(int code);
+extern int menu();
+extern int driver1();
+extern int driver2();
+extern int driver3();
+extern int driver4();
+
+//printArray
+//
+//extern void printArray(char*, int*, int);
+//extern void printArray(char*, char*, int);
+//extern void printArray(char*, char**, int);
+//extern void printArray(char*, int*, int);
+extern void INTprintArray(char*, int*, int);
+extern void CHRprintArray(char*, char*, int);
+extern void STRprintArray(char*, char**, int);
+
+//bsort
+//
+//extern void bsort(int*, int, int);
+//extern void bsort(char*, int, int);
+//extern void string_bsort(char**, int, int);
+extern void INTbsort(int*, int, int); 
+extern void CHRbsort(char*, int, int);
+extern void STRbsort(char**, int, int);
+
+//initArray
+//
+//extern int * initArray(int n);
+//extern char * initArray(int n);
+//extern char ** initArray(int n);
+extern int * INTinitArray(int n);
+extern char * CHRinitArray(int n);
+extern char ** STRinitArray(int n);
+
+//INT, CHAR, & STR FUNCTIONS
+//
+extern void MSGinitArray(int choice);
+
+//FILE FUNCTIONS
+//
+extern int * readArray(char * fname, int * np);
+extern void MSGreadArray(int choice);
+extern int * filearray;
+

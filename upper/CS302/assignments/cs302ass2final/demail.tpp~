@@ -1,0 +1,603 @@
+using namespace std;
+using namespace demail;
+
+//-------------------------------------NonClassFuncs---------------------------------//
+//just dealloc
+/*
+void dealloc_array(TYPE **& darray, int i, int sent)
+{
+    if (i == sent)
+    {
+        return;
+    }
+    dealloc_array(darray,++i,sent);
+    darray[i] = nullptr;
+    return;
+}
+*/
+
+
+//--------------------------------------NODE-----------------------------------------//
+template <class TYPE>
+node<TYPE>::node() : prev(nullptr), next(nullptr), num(1)
+{}
+
+template <class TYPE>
+node<TYPE>::node(node*& from) : DATA(from->DATA), prev(from->prev), next(from->next), num(from->num + 1)
+{}
+
+template <class TYPE>
+node<TYPE>::node(TYPE & CDATA) : DATA(CDATA), prev(nullptr), next(nullptr), num(1)
+{}
+
+template <class TYPE>
+node<TYPE>::node(TYPE & CDATA, node *& previous) : DATA(CDATA), prev(previous), next(nullptr), num((previous->num) + 1)
+{}
+   
+template <class TYPE>
+TYPE& node<TYPE>::give_priority()
+{
+    return DATA;
+}
+
+template <class TYPE>
+node<TYPE>*& node<TYPE>::get_next()
+{
+    return next;
+}
+
+template <class TYPE>
+node<TYPE>*& node<TYPE>::get_next(int n)
+{
+    node * here = this;
+    if (next == nullptr) //END REACHED, DOESNT MATTER
+        return prev->next;
+
+    else if (n == 0)    //BASE CASE, PROVIDING END NOT FOUND
+        return next;
+    if (n == -1)         //GO TO END
+        return next->get_next(-1);
+    else                 //KEEP GOING
+        return next->get_next(--n);
+}
+
+template <class TYPE>
+node<TYPE>*& node<TYPE>::get_prev()
+{
+    return prev;
+}
+
+template <class TYPE>
+node<TYPE>*& node<TYPE>::get_prev(int n)
+{
+    if (prev == nullptr) //head reached
+        return this;
+    if (n == 0)          //next
+        return prev;
+    else if (n == -1)    //goto head
+        return prev->get_prev(-1);
+    else                 //goto previous
+        return prev->get_prev(--n);
+}
+
+template <class TYPE>
+node<TYPE>*& node<TYPE>::set_next(TYPE & DATA_PASSED, node*&prev)
+{
+    //if (!DATA_PASSED) return nullptr;
+    //if (!prev && !next)
+    node * here = this;
+    next = new node(DATA_PASSED,here);
+    return next;
+}
+
+//node *& node<TYPE>::operator++
+
+template <class TYPE>
+node<TYPE>*& node<TYPE>::append(node*& nxt)
+{
+    if (nxt == nullptr) 
+    {
+        next = nullptr;
+        return this;
+    }
+    next = set_next(nxt->DATA, this);
+    node * n_next = nxt->next;
+    if (!n_next)
+    {
+        next->next = nullptr;
+        next->prev = this;
+        return next;
+    }
+
+    return append(n_next);
+}
+
+//ostream& display_all<>(ostream& o, node<TYPE> *& curr);
+
+template <class TYPE>
+int dll<TYPE>::display_all(ostream& o, node<TYPE> *& curr)
+{
+    if (curr == nullptr)
+        return 0;
+    curr->display_node(o);
+    o << "====================" << endl;
+    return display_all(o,curr->get_next()) + 1;
+}
+
+template <class TYPE>
+ostream& node<TYPE>::display_node(ostream& o)
+{
+    o << "item #" << num << ":" << endl;
+    DATA.display_me(o);
+    //o << DATA << endl;
+    return o;
+}
+
+/*
+template <class TYPE>
+ostream& node<TYPE>::operator<<(ostream& o)
+{
+    o << "item #" << num << ":" << endl;
+    o << DATA << endl;
+    return o;
+}
+*/
+
+template <class TYPE>
+bool operator==(const node<TYPE> & A, const node<TYPE> & B)
+{
+    if (A.DATA.get_type() == B.DATA.get_type()) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator!=(const node<TYPE> & A, const node<TYPE> & B)
+{
+    return !(A == B);
+}
+
+/*
+int node<TYPE>::resort(node **& list, int i, int size)
+{
+    if (i == 1)
+    {
+        next = list[1];
+        prev = nullptr;
+        num = 1;
+        return resort(list, ++i, size);
+    }
+
+    else if (i == size)
+    {
+        next = nullptr;
+        prev = list[i - 1];
+        num = i;
+        return 0;
+    }
+
+    prev = list[i -1];
+    next = list[i];
+    return resort(list,++i,size);
+}
+*/
+
+
+
+template <class TYPE>
+bool operator<(const node<TYPE> & A, const node<TYPE> & B)
+{
+    if (A.DATA.get_type() < B.DATA.get_type()) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator>(const node<TYPE> & A, const node<TYPE> & B)
+{
+    if (A.DATA.get_type() > B.DATA.get_type()) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator<=(const node<TYPE> & A, const node<TYPE> & B)
+{
+    if (A.DATA.get_type() <= B.DATA.get_type()) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator>=(const node<TYPE> & A, const node<TYPE> & B)
+{
+    if (A.DATA.get_type() >= B.DATA.get_type()) return true;
+    return false;
+}
+
+//-------------------------------------ITERATOR--------------------------------------//
+
+//Constructors
+template <class TYPE>
+RAiterator<TYPE>::RAiterator() : icurr(nullptr), ihead(nullptr), itail(nullptr), inext(nullptr), iprev(nullptr)
+{}
+
+template <class TYPE>
+RAiterator<TYPE>::RAiterator(RAiterator::pointer start) : icurr(start), ihead(start), itail(start->get_next(-1)),
+                                       inext(start->get_next()), iprev(nullptr)
+{}
+
+template <class TYPE>
+RAiterator<TYPE>::RAiterator(RAiterator & from) : icurr(from.icurr), ihead(from.ihead), itail(from.ihead),
+                                            inext(from.inext), iprev(from.iprev)
+{}
+
+template <class TYPE>
+RAiterator<TYPE>::RAiterator(RAiterator::pointer fromC, RAiterator::pointer fromH, RAiterator::pointer fromT,RAiterator::pointer fromN,RAiterator::pointer fromP) : icurr(fromC), 
+                       ihead(fromH), itail(fromT), inext(fromN), iprev(fromP)
+{}
+
+//Assignment
+template <class TYPE>
+RAiterator<TYPE>& RAiterator<TYPE>::operator=(RAiterator & from)
+{
+    if (this != &from)
+    {
+        icurr = from.icurr;
+        ihead = from.ihead;
+        itail = from.itail;
+        inext = from.inext;
+        iprev = from.iprev;
+    }
+    return *this;
+}
+
+template <class TYPE>
+RAiterator<TYPE>& RAiterator<TYPE>::operator+=(int offset)
+{
+    iprev = iprev->get_next(offset);
+    icurr = iprev->get_next();
+    inext = icurr->get_next();
+
+    return *this;
+}
+
+template <class TYPE>
+RAiterator<TYPE>& RAiterator<TYPE>::operator-=(int offset)
+{
+    inext = inext->get_prev(offset);
+    icurr = inext->get_prev();
+    iprev = icurr->get_prev();
+
+    return *this;
+}
+
+
+//Access
+template <class TYPE>
+typename RAiterator<TYPE>::pointer RAiterator<TYPE>::operator*() const
+{
+    return *icurr;
+}
+
+template <class TYPE>
+typename RAiterator<TYPE>::reference RAiterator<TYPE>::operator->() 
+{
+    return icurr;
+}
+
+template <class TYPE>
+typename RAiterator<TYPE>::reference RAiterator<TYPE>::operator[](int offset)
+{
+    return *(ihead->get_next(offset));
+}
+
+
+//Increment
+template <class TYPE>
+RAiterator<TYPE>& RAiterator<TYPE>::operator++() 
+{
+    iprev = icurr;
+    icurr = inext;
+    inext = inext->get_next();
+    return *this;
+}
+
+template <class TYPE>
+RAiterator<TYPE> RAiterator<TYPE>::operator++(int)
+{
+    RAiterator temp(*this);
+    ++(*this);
+    return temp;
+}
+
+template <class TYPE>
+RAiterator<TYPE>& RAiterator<TYPE>::operator--()
+{
+    if (iprev == nullptr) //reached head
+        return *this;
+    inext = icurr;
+    icurr = iprev;
+    iprev = iprev->get_prev();
+    return *this;
+}
+
+template <class TYPE>
+RAiterator<TYPE> RAiterator<TYPE>::operator--(int)
+{
+    RAiterator temp(*this);
+    if (iprev == nullptr)
+        return temp;
+
+    --(*this);
+    return temp;
+}
+
+//Arithmetic
+template <class TYPE>
+RAiterator<TYPE> RAiterator<TYPE>::operator+(int offset) const
+{
+    pointer copyprev = iprev->get_next(offset);
+    pointer copycurr = copyprev->get_next();
+    pointer copynext = copycurr->get_next();
+    RAiterator temp(copycurr,ihead,itail,copynext,copyprev);
+    return temp;
+}
+
+template <class TYPE>
+RAiterator<TYPE> RAiterator<TYPE>::operator-(int offset) const
+{
+    pointer copynext = inext->get_prev(offset);
+    pointer copycurr = copynext->get_prev();
+    pointer copyprev = copycurr->get_prev();
+    RAiterator temp(copycurr,ihead,itail,copynext,copyprev);
+    return temp;
+}
+
+//COMPARISONS
+template <class TYPE>
+bool operator==(const RAiterator<TYPE> & other1, const RAiterator<TYPE> & other2)
+{
+    if (other1.icurr == other2.icurr) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator!=(const RAiterator<TYPE> & other1, const RAiterator<TYPE> & other2)
+{
+    if (other1.icurr != other2.icurr) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator<(const RAiterator<TYPE> & other1, const RAiterator<TYPE> & other2)
+{
+    if (other1.icurr < other2.icurr) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator>(const RAiterator<TYPE> & other1, const RAiterator<TYPE> & other2)
+{
+    if (other1.icurr > other2.icurr) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator<=(const RAiterator<TYPE> & other1, const RAiterator<TYPE> & other2)
+{
+    if (other1.icurr <= other2.icurr) return true;
+    return false;
+}
+
+template <class TYPE>
+bool operator>=(const RAiterator<TYPE> & other1, const RAiterator<TYPE> & other2)
+{
+    if (other1.icurr >= other2.icurr) return true;
+    return false;
+}
+
+//--------------------------------------------dll-----------------------------------//
+//template <class TYPE>
+
+template <class TYPE>
+dll<TYPE>::dll() : head(nullptr), tail(nullptr), size(0)
+{}
+
+//I have no idea..----------------------
+template <class TYPE>
+dll<TYPE>::dll(const dll<TYPE> & copyDLL)
+{
+    head = new node(copyDLL.head);
+    tail = head;
+    tail = tail->append(copyDLL.head->get_next());
+    //std::copy(copyDLL->head,head)
+}
+//--------------------------------------
+
+//I think not
+//node*& dll<TYPE>::operator+(const node &)
+
+//I think not
+//operator=(const dll &);
+//operator+=(const dll &);
+
+template <class TYPE>
+ostream& dll<TYPE>::display_one(ostream& o, int n)
+{
+    return (head->get_next(n-1))->display_node(o);
+    //o << (*((head)->get_next(n-1)));
+    //return o;
+}
+
+
+template <class TYPE>
+dll<TYPE> operator+(const dll<TYPE>& from, const TYPE& addition)
+{
+    dll temp(from);
+    temp.insert(addition);
+    return temp;
+}
+
+template <class TYPE>
+dll<TYPE> operator+(const TYPE& addition, const dll<TYPE>& from)
+{
+    dll temp(from);
+    temp.insert(addition);
+    return temp;
+}
+
+template <class TYPE>
+dll<TYPE> operator+(const dll<TYPE>& op1, const dll<TYPE>& op2)
+{
+        dll temp(op1);
+        temp->tail = temp->tail->append(op2.head);
+        return temp;
+}
+
+template <class TYPE>
+dll<TYPE>& dll<TYPE>::operator+=(const TYPE & nxt)
+{
+    insert(nxt);
+    return *this;
+}
+
+template <class TYPE>
+dll<TYPE>& dll<TYPE>::operator=(const dll<TYPE> & copydll)
+{
+    delete head;
+    head = nullptr;
+    tail = nullptr;
+    
+    head = new node(copydll.head);
+    head = tail;
+    tail->append(copydll.head->next);
+    return *this;
+}
+
+template <class TYPE>
+dll<TYPE>& dll<TYPE>::operator+=(const dll<TYPE> & copydll)
+{
+    tail->append(copydll.head);
+    return *this;
+}
+
+/*
+NEED TO IMPLEMENT COMPARISON OPERATORS FOR NODE & HIERARCHY
+int dll<TYPE>::sort()
+{
+    if (!head || head == tail) return 0;
+    int * list = new int[size];
+    int iteration {size - 1};
+    int * tcount = new int [3];
+    node ** nlist = new node*[size];
+    int first {0};
+    *list first = sort(head,head->get_next(),list,iteration,nlist, tcount);
+    *list = first;
+    ++tcount[first];
+    *nlist = head;
+    node ** copy_list = new node*[size];
+    swaps(list,size - 1,nlist,copy_list,tcount[0],tcount[1],tcount[2]);
+    head = copy_list[0];
+    tail = copy_list[size-1];
+    list->resort(copy_list,1,size - 1);
+
+
+    dealloc_array(copy_list,0,size-1);
+    dealloc_array(nlist,0,size-1);
+    delete [] list;
+    delete [] tcount;
+    delete [] nlist;
+    delete [] copy_list;
+
+    return 1;
+}
+
+
+int dll<TYPE>::sort(node*& prev, node *& curr, int *& list, int & i, node **& nlist, int *& tcount)
+{
+    ++i;
+    nlist[i] = curr;
+    if (curr == tail) 
+    {
+        --i;
+        list[i] = curr->get_type();
+        --i;
+        return prev->get_type();
+    }
+
+
+    int previous = sort(prev->get_next(), curr->get_next(),list,i);
+    ++tcount[previous];
+    list[i] = previous;
+    --i;
+    return prev->get_type();
+}
+
+int dll<TYPE>::swaps(int *& tlist, int lsize, node**& nlist, node**& nnlist, int Ptag, int Btag, int Ytag)
+{
+    if (lsize == 0) return 1;
+    switch(tlist[lsize])
+    {
+        case(0):
+            nnlist[Ptag - 1] = nlist[lsize];
+            --Ptag;
+            break;
+        case(1):
+            nnlist[Ptag + Btag - 1] = nlist[lsize];
+            --Btag;
+            break;
+        case(2):
+            nnlist[Ptag + Btag + Ytag - 1] = nlist[lsize];
+            --Ytag;
+            break;
+    }
+    return swaps(tlist,--lsize,nlist,nnlist,Ptag,Btag,Ytag);
+}
+*/
+
+template <class TYPE>
+int dll<TYPE>::insert(TYPE & DATA_PASSED)
+{
+    if (!head && !tail) 
+    {
+        head = new node(DATA_PASSED);
+        tail = head;
+    }
+    else
+        tail = tail->set_next(DATA_PASSED, tail);
+    return 1;
+}
+    
+    
+
+
+//Nah probably not
+// int traverse(int a, int z);
+
+template <class TYPE>
+node<TYPE>*& dll<TYPE>::traverse(int i)
+{
+    return head->get_next(i);
+}
+
+template <class TYPE>
+node<TYPE>*& dll<TYPE>::traverse()
+{
+    return head->get_next();
+}
+
+//I dont think we need to do this
+//int dll<TYPE>::delete_list();
+template <class TYPE>
+dll<TYPE>::~dll()
+{
+    delete head;
+    head = tail = nullptr;
+}
+
+/*template <class TYPE>
+ostream& demail::annoyances::operator<<(ostream & o, dll<TYPE> & from)
+{
+    if (!from.head) return o;
+    return from.head->display_all(o,(from.head));
+}
+*/
+
+

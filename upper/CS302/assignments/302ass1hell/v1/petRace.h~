@@ -1,0 +1,87 @@
+//Molly Diaz, modiaz@pdx.edu, CS302 In-Person
+//Program #1:
+//File (.h): 
+#include <cstddef>
+#include <cmath>
+#include <ctime>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <cstdlib>
+
+//Error code list:
+//1 - animals function gone wrong
+//2 - tortoise function gone wrong
+//3 - hare function gone wrong
+//4 - pigeon function gone wrong
+//
+//
+
+
+class animals
+{
+    public:
+        animals();
+        ~animals();
+        int random_names();
+        int random_animal();
+        int seed_val();
+
+    private:
+        int seed;
+        int * animal;
+
+};
+
+
+//attr list (array of integers)
+//1 - Seed value
+//2 - Speed (number of moves per round)
+//3 - Unique id
+//4
+class tortoise : public animals
+{
+    public:
+        tortoise();
+        ~tortoise();
+        int speed(int seed);
+        bool fell_over(int seed);
+        int pushes_on(int seed);
+    private:
+        bool on_back;
+        int * attr;
+        std::string name;
+        std::string animal_name;
+};
+
+class hare : public animals
+{
+    public:
+        hare();
+        ~hare();
+        bool does_move(int seed);
+        int faster(int seed);
+        int slower(int seed);
+
+    private:
+        int * attr;
+        std::string name;
+        std::string animal_name;
+};
+
+class pigeon : public animals
+{
+    public:
+        pigeon();
+        ~pigeon();
+        int distraction(int seed);
+        int moves(int seed);
+        bool listens(int seed);
+    private:
+        int * attr;
+        std::string name;
+        std::string animal_name;
+
+};
+

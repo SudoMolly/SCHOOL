@@ -1,0 +1,159 @@
+#include "bsort.h"
+#include <stddef.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+
+
+int main()
+{
+    srand(time(NULL));
+    int choice = -1;
+    do
+    {
+        choice = menu();
+        switch(choice)
+        {
+            case(1):
+                if (driver1() != 0) error_code(1);
+                break;
+            case(2):
+                if (driver2() != 0) error_code(2);
+                break;
+            case(3):
+                if (driver3() != 0) error_code(3);
+                break;
+            case(4):
+                if (driver4() != 0) error_code(4);
+                break;
+            case(0):
+                break;
+            default:
+                error_code(0);
+                break;
+        }
+    } while (choice != 0);
+    return 0;
+}
+
+void error_code(int code)
+{
+    switch(code)
+    {
+        case(0):
+            printf("%s", "Not a valid choice.\n");
+            break;
+        case(1):
+            printf("%s", "Error in int driver.\n");
+            break;
+        case(2):
+            printf("%s", "Error in char driver.\n");
+            break;
+        case(3):
+            printf("%s", "Error in string driver.\n");
+            break;
+        case(4):
+            printf("%s", "Error in file driver.\n");
+            break;
+    }
+}
+
+int menu()
+{
+    int choice = -1;
+    printf("%s", "Select version: 1(int), 2(char), 3(str), 4(file), \
+                  \\0(quit) ");
+    scanf("%i", &choice);
+    printf("%c", '\n');
+    return choice;
+}
+
+int driver1()
+{
+    int n;
+    int * array = NULL;
+    do
+    {
+        MSGinitArray(0);
+        scanf("%d", &n);
+        array = INTinitArray(n);
+        if (array == NULL) MSGinitArray(1);
+    } while (array == NULL);
+
+    INTprintArray("Init: ", array, n);
+    INTbsort(array, 0, n);
+    INTprintArray("Sorted: ", array, n);
+    free(array);
+    array = NULL;
+    return 0;
+}
+
+int driver2()
+{
+    int n;
+    char * array = NULL;
+    do
+    {
+        MSGinitArray(0);
+        scanf("%d", &n);
+        array = CHRinitArray(n);
+        if (array == NULL) MSGinitArray(1);
+    } while (array == NULL);
+
+    CHRprintArray("Init: ", array, n);
+    CHRbsort(array, 0, n);
+    CHRprintArray("Sorted: ", array, n);
+    free(array);
+    array = NULL;
+    return 0;
+}
+
+int driver3()
+{
+    int n;
+    char ** array;
+    do
+    {
+        MSGinitArray(0);
+        scanf("%d", &n);
+        array = STRinitArray(n);
+        if (array == NULL) MSGinitArray(1);
+    } while (array == NULL);
+
+    STRprintArray("Init: ", array, n);
+    STRbsort(array, 0, n);
+    STRprintArray("Sorted: ", array, n);
+
+    for (int i = 0; i < n; ++i)
+    {
+        free(array[i]);
+        array[i] = NULL;
+    }
+
+    free(array);
+    array = NULL;
+    return 0;
+}
+
+int driver4()
+{
+    char file[4];
+    int n;
+    int * array;
+    file[4] = '\0';
+
+    MSGreadArray(3);
+    scanf("%s", file);
+    printf("\n");
+
+    array = readArray(file, &n); 
+
+    INTprintArray("Init: ", array, n);
+    INTbsort(array,0,n);
+    INTprintArray("Sorted: ", array, n);
+
+    free(array);
+    array = NULL;
+    return 0;
+}
+

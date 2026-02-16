@@ -1,0 +1,150 @@
+//OVERALL HEADER FILE
+#include <string>
+#include <vector>
+#include <cstring>
+#include <array>
+#include <iostream>
+
+//MAIN FUNCTIONS-----------------------------------------------------------------------|
+
+void strcpy2(char *& from, char *& to);
+void ~strcpy2(char *& copy);
+bool case1_strings(char *& animal, string & name);
+int view_list(int t,int h, int p);
+int menu_display();
+
+//MAIN CLASS FUNCTIONS----------------------------------------------------------------------------|
+
+int make_sea(sea *& S,int max, int i);
+int make_land(land *& L, int max, int i);
+int make_pigeon(vector<pigeon> *& P, int max, int i);
+bool case1(vector<land> & L, vector<sea> & S, vector<pigeon> & P);
+
+//BASE (Animals)------------------------------------------------------------------|
+class base
+{
+    public:
+        base(char *& toanimal, std::string & toname);
+        base();
+        ~base();
+
+        int round_tick(std::vector<int> & attr);
+        int random();
+        int type(int & type);
+        int display(int type);
+
+    private:
+        char * animal;
+        std::string name;
+};
+//DERIVED-------------------------------------------------------------------------|
+
+class land
+{
+    public:
+        land(char *& animal, std::string & name);
+        land();
+        ~land();
+
+        bool bungle();
+        int round();
+        bool recover();
+
+    private:
+        std::vector<int> attr;
+};
+
+class sea
+{
+    public:
+        sea(char *& animal, std::string & name);
+        sea();
+        ~sea();
+
+        bool bungle();
+        int round();
+        bool recover();
+    private:
+        std::vector<int> attr;
+};
+
+class pigeon
+{
+    public:
+        pigeon(char *& animal, std::string & name);
+        pigeon();
+        ~pigeon();
+
+        bool bungle();
+        int round();
+        bool recover();
+    private:
+        std::vector<int> attr;
+};
+
+
+//LISTS-------------------------------------------------------------------------|
+
+class node
+{
+    public:
+        node();
+        ~node();
+        int obstacle();
+    private:
+        int obs_num;
+        int node_num;
+};
+
+class CLL
+{
+    public:
+        CLL(std::vector<land> & toanimal);
+        CLL(std::vector<sea> & toanimal);
+        CLL(std::vector<pigeon> & toanimal);
+        CLL();
+        ~CLL();
+
+        int ground();
+        int water();
+        int mud();
+
+        int display_round(node * current);
+        int tick(auto & animal);
+    private:
+        std::vector<int> ledger;
+        std::vector<node*> round_ledger;
+        node * rear;
+        std::vector<std::string>  animals;
+};
+
+class LLL
+{
+    public:
+        LLL();
+        ~LLL();
+        
+        class node
+        {
+            public:
+                node(std::string & toname, char *& animal, int wins);
+                node();
+                ~node();
+            private:
+                node * next;
+                std::string name;
+                char * animal;
+                int wins;
+        };
+
+        bool display(LLL::node*current);
+
+    private:
+        std::string name;
+        char * animal;
+        int wins;
+
+        LLL * head;
+        LLL * rear;
+};
+

@@ -1,0 +1,10 @@
+#include "ass2.h"
+using namespace std;
+
+int main()
+{
+    cout << "Beginning Program" << endl;
+    mainmen run_prog;
+    cout << "Goodbye" << endl;
+    return 0;
+}

@@ -1,0 +1,39 @@
+// For CS205, Portland State University (J. Li)
+
+// Bubble sort in C (baseline version)
+
+#include <stdio.h>
+
+// Print an int array of size n
+//
+void printArray(char* msg, int* a, int n)
+{
+  printf(msg);
+  for (int i = 0; i < n; i++)
+    printf("%d, ", a[i]);
+  printf("\n");
+}
+
+// Swap two int array elements
+//
+void swap(int* a, int i, int j)
+{
+  if (i != j) {
+    int tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+}
+
+// Bubble sort a range [low,high) of an int array
+//
+void bsort(int* a, int low, int high)
+{
+  if (high - low > 1) 
+    for (int i = low; i < high; i++)
+      for (int j = i+1; j < high; j++) 
+		if (a[i] > a[j])
+		  swap(a, i, j);
+}
+
+

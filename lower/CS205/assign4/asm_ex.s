@@ -1,0 +1,43 @@
+#swap_elements.s
+    .file   "task6.s"
+    .text
+    .globl  f
+f:
+    # Save registers
+    pushq %r12           
+    pushq %r13
+
+    # Initialize pointers
+    movq %rdi, %r12       # %r12 = beginning of the array
+    movq %rdi, %r13       # %r13 = beginning of the array (to find the end)
+
+find_end:
+    movl (%r13), %eax     # Load the current element into %eax
+    test %eax, %eax       # Check if the current element is 0 (sentinel)
+    je swap_loop_init     # If 0, we've reached the end of the array
+    addq $4, %r13         # Move to the next element (4 bytes per integer)
+    jmp find_end          # Continue looping
+
+swap_loop_init:
+    subq $4, %r13         # Move %r13 back to the last non-zero element
+
+swap_loop:
+    cmpq %r12, %r13       # Compare the start and end pointers
+    jle done              # If start >= end, we're done
+
+    # Swap elements at %r12 and %r13
+    movl (%r12), %eax     # Load the element at the start into %eax
+    movl (%r13), %edx     # Load the element at the end into %edx
+    movl %edx, (%r12)     # Store the end element at the start
+    movl %eax, (%r13)     # Store the start element at the end
+
+    # Move pointers
+    addq $4, %r12         # Move the start pointer forward
+    subq $4, %r13         # Move the end pointer backward
+    jmp swap_loop         # Continue looping
+
+done:
+    # Restore callee-saved registers
+    popq %r13
+    popq %r12
+    ret
