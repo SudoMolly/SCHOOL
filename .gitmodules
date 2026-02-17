@@ -10,3 +10,6 @@
 [submodule "upper/Programming-Languages--358-"]
 	path = upper/Programming-Languages--358-
 	url = https://github.com/SudoMolly/Programming-Languages--358-
+[submodule "upper/CS410P_WINTER"]
+	path = upper/CS410P_WINTER
+	url = git@github.com:SudoMolly/JoyOfCodingWinter2026.git
