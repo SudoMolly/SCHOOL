@@ -16,3 +16,6 @@
 [submodule "upper/CS496"]
 	path = upper/CS496
 	url = git@gitlab.cecs.pdx.edu:modiaz/netsec-w26-modiaz.git
+[submodule "upper/410Kata"]
+	path = upper/CS410P_WINTER/KatasWinter2026
+	url = git@github.com:JoyOfCodingPDX/KatasWinter2026.git
