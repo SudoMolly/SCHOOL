@@ -1,9 +1,9 @@
 [submodule "upper/CS302/assignments/302ass1hell/302-1"]
 	path = upper/CS302/assignments/302ass1hell/302-1
-	url = https://gitlab.cecs.pdx.edu/modiaz/302-1
+	url = git@gitlab.cecs.pdx.edu:modiaz/302-1.git
 [submodule "upper/CS302/assignments/cs302-ass2-mollydiaz"]
 	path = upper/CS302/assignments/cs302-ass2-mollydiaz
-	url = https://gitlab.cecs.pdx.edu/modiaz/cs302-ass2-mollydiaz
+	url = git@gitlab.cecs.pdx.edu:modiaz/cs302-ass2-mollydiaz.git
 [submodule "upper/Programming-Languages--358-"]
 	path = upper/Programming-Languages--358-
 	url = https://github.com/SudoMolly/Programming-Languages--358-
@@ -12,7 +12,7 @@
 	url = git@github.com:SudoMolly/JoyOfCodingWinter2026.git
 [submodule "upper/CS358"]
 	path = upper/CS358
-	url = https://github.com/SudoMolly/CS358
+	url = git@github.com:SudoMolly/CS358.git
 [submodule "upper/CS496"]
 	path = upper/CS496
 	url = git@gitlab.cecs.pdx.edu:modiaz/netsec-w26-modiaz.git
