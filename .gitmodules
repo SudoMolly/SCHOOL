@@ -13,3 +13,6 @@
 [submodule "upper/CS358"]
 	path = upper/CS358
 	url = https://github.com/SudoMolly/CS358
+[submodule "upper/CS496"]
+	path = upper/CS496
+	url = git@gitlab.cecs.pdx.edu:modiaz/netsec-w26-modiaz.git
