@@ -5,8 +5,8 @@
 	path = upper/CS302/assignments/cs302-ass2-mollydiaz
 	url = git@gitlab.cecs.pdx.edu:modiaz/cs302-ass2-mollydiaz.git
 [submodule "upper/Programming-Languages--358-"]
-	path = upper/Programming-Languages--358-
-	url = https://github.com/SudoMolly/Programming-Languages--358-
+	path = upper/CS358
+	url = git@github.com:SudoMolly/CS358.git
 [submodule "upper/CS410P_WINTER"]
 	path = upper/CS410P_WINTER
 	url = git@github.com:SudoMolly/JoyOfCodingWinter2026.git
