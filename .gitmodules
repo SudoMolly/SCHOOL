@@ -19,9 +19,3 @@
 [submodule "upper/410Kata"]
 	path = upper/CS410P_WINTER/KatasWinter2026
 	url = git@github.com:JoyOfCodingPDX/KatasWinter2026.git
-[submodule "upper/CS492"]
-	path = upper/CS492
-	url = git@github.com:SudoMolly/CS492.git
-[submodule "upper/upper/CS492"]
-	path = upper/upper/CS492
-	url = git@github.com:SudoMolly/CS492.git
