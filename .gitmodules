@@ -22,3 +22,6 @@
 [submodule "upper/malware-s26-modiaz"]
 	path = upper/malware-s26-modiaz
 	url = git@gitlab.cecs.pdx.edu:modiaz/malware-s26-modiaz.git
+[submodule "upper/CS497"]
+	path = upper/CS497
+	url = git@github.com:SudoMolly/CS497.git
