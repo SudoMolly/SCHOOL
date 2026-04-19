@@ -19,3 +19,6 @@
 [submodule "upper/410Kata"]
 	path = upper/CS410P_WINTER/KatasWinter2026
 	url = git@github.com:JoyOfCodingPDX/KatasWinter2026.git
+[submodule "upper/malware-s26-modiaz"]
+	path = upper/malware-s26-modiaz
+	url = git@gitlab.cecs.pdx.edu:modiaz/malware-s26-modiaz.git
