@@ -25,3 +25,6 @@
 [submodule "upper/CS497"]
 	path = upper/CS497
 	url = git@github.com:SudoMolly/CS497.git
+[submodule "upper/malware-share"]
+	path = upper/malware-share
+	url = git@github.com:SudoMolly/malware-share.git
